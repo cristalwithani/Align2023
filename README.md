@@ -13,4 +13,4 @@ cristalwithani.github.io/Align2023
 
 This page is generated after the student provides the necessary information.
 
-cristalwithani.github.io/Schedule/schedule_page.html
+cristalwithani.github.io/Schedule/
