@@ -13,4 +13,4 @@ This page is the landing page to our Align website. From here the student can in
 
 This page is generated after the student provides the necessary information.
 
-https://cristalwithani.github.io/Align2023/schedule_page.html
+[https://cristalwithani.github.io/Align2023/schedule_page.html](https://cristalwithani.github.io/Align2023/schedule_page.html)https://cristalwithani.github.io/Align2023/schedule_page.html
