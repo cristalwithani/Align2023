@@ -1,7 +1,7 @@
 <html>
 <body>
 
-Year is: <?php echo $_POST["year"]; ?><br>
+Year is: <?php echo $_POST["year"]; ?>
 
 </body>
 </html>
