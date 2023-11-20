@@ -1,51 +1,14 @@
 <!DOCTYPE html>
 <Html>    
 
+<!-- JAVASCRIPT FILE LOCATION -->
+<!-- Change to GitHub file location later -->
+<script src="C:\Users\Cristal\Documents\FINAL PROJECT FILES\javascript.js"></script>
+
 <Head>
 <Style>
-/* Dropdown Button */
-.dropbtn {
-  background-color: #7B7D7D;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-}
 
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #ddd;}
-
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {display: block;}
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
-
-/* Button for export */
+/* BUTTON FOR EXPORT */
   .button {
   border: none;
   color: white;
@@ -67,31 +30,42 @@ Align
 </Head>
   
 <Body>
+<!-- Asking the user for input, will be left aligned -->
 <h1>Please enter the information necessary to generate a schedule.</h1>
    
-<center>  
+<center> <!-- Will cause text to be center aligned -->
+
+<!-- Dropdown for hours per semester -->
 <p>Choose the amount of hours per semester:</p>
   
-<select>
+<select class="hours_per_sem" name="hours_per_sem">
   <option>3</option>
   <option>6</option>
   <option>9</option>
   <option>12</option>
   <option>15</option>
 </select>
+
+<div class="hours"> <!-- Hours variable -->
   
+<!-- Dropdown for starting semester -->
 <p>Choose the starting semester:</p>
 
-<select>
+<select class="start_sem" name="start_sem">
   <option>Fall</option>
   <option>Spring</option>
 </select>
 
-<p>Type in the starting year:</p>
-<label for="year">Ex: 2021</label><br>
-<input type="text" id="year" name="year"><br>
+<div class="semester"> <!-- Semester variable -->
 
+<!-- Text input for starting year -->
+<p>Type in the starting year:</p>
+<input placeholder="Ex: 2012" name="year_input"
+<p id="log"></p>
+
+<!-- NEED YEAR VAIRABLE -->
   
+<!-- Button for export -->
 <p><button class="button button2">EXPORT</button></p>
 
   
