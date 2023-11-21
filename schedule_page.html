@@ -1,15 +1,39 @@
 <!DOCTYPE html>
+<script src="C:\Users\Cristal\Documents\FINAL PROJECT FILES\VSCodeFiles\javascript.js"></script>
 <html>
 <style>
 table, th, td {
   border:1px solid black;
 }
 </style>
+
+<!-- The variables -->
+<script>
+window.onload = console.log(localStorage.getItem("hours"));
+window.onload = console.log(localStorage.getItem("semester"));
+window.onload = console.log(localStorage.getItem("year"));
+</script>
+
 <head>
 </head>
 <body>
 
 <h1>Your generated schedule:</h1>
+
+
+
+<p>
+  <!-- DISPLAY THE OUTPUT -->
+  <p> Hours selected:
+    <span class="hours"></span>
+  </p>
+  <p> Semester selected:
+    <span class="sem"></span>
+  </p>
+  <p> Year selected:
+    <span class="year"></span>
+  </p>
+</p>
 <center>
 
 <!-- Table -->
