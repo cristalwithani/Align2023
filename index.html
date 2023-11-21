@@ -1,106 +1,98 @@
+<!DOCTYPE html>
+<script src="cristalwithani/Align2023/align.js"></script>
 <html>
-<head>
-    <!-- Home  Page -->
-    <title>Align</title>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <title>
+      Testing HTML Values
+    </title>
+  </head>
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="CSS\reset.css">
-    <link rel="stylesheet" href="CSS\style.css">
+  <body>
 
-    <!-- JavaScript Files -->
-    <script src="align.js"></script>
-    <script src="javascript.js"></script>
-
-</head>
-
-<body>
-    <!-- Header Style -->
-    <header>
-        <img src="Images\TWU.png" alt="TWU Logo">
-        <h1>Align</h1>
-    </header>
-    
-    <!-- Asking the user for input, will be left aligned -->
     <h1>Please enter the information necessary to generate a schedule.</h1>
- 
+
     <div class="inputs">
-        <!-- get hours variable -->
-        <div class="hours_select" style="padding-bottom: 30px;">
-            <label for="hours">Choose your desired workload:</label>
-            <select id="hours" name="hours" required>
-                <option value="9">9 credits per semester</option>
-                <option value="12">12 credits per semester</option>
-                <option value="15">15 credits per semester</option>
-                <option value="18">18 credits per semester</option>
-            </select>
-        </div>
+      <!-- get hours variable -->
+      <div class="hours_select" style="padding-bottom: 30px;">
+        <label for="hours">Choose your desired workload:</label>
 
-        <!-- get semester variable -->
-        <div class="sem_select" style="padding-bottom: 30px;">
-            <label for="sem">Choose your desired starting semester:</label>
-            <select id="sem" name="sem"required>
-                <option value="F">Fall Semester</option>
-                <option value="S">Spring Semester</option>
-            </select>
-        </div>
 
-        <!-- get year variable -->
-        <div class="year_input" style="padding-bottom: 30px;">
-            <label for="year">Enter Starting Year:</label>
-            <input type="text" id="year" name="year" placeholder="Ex: 2023" pattern="\d{4}" required>
-            <span class="error-message" id="yearError"></span>
-        </div>
+        <select id="hours" name="hours" required>
+          <option value="9">9 credits per semester</option>
+          <option value="12">12 credits per semester</option>
+          <option value="15">15 credits per semester</option>
+          <option value="18">18 credits per semester</option>
+        </select>
+      </div>
+
+      <!-- get semester variable -->
+      <div class="sem_select" style="padding-bottom: 30px;">
+        <label for="sem">Choose your desired starting semester:</label>
+        <select id="sem" name="sem" required>
+          <option value="F">Fall Semester</option>
+          <option value="S">Spring Semester</option>
+        </select>
+      </div>
+
+      <!-- get year variable -->
+      <div class="year_input" style="padding-bottom: 30px;">
+        <label for="year">Enter Starting Year:</label>
+        <input type="text" id="year" name="year" placeholder="Ex: 2023" pattern="\d{4}" required>
+        <span class="error-message" id="yearError"></span>
+      </div>
     </div>
 
-    <!-- generate button -->
+
+    <!--ONE BIG BUTTON -->
     <div class="generate_button">
-        <button type="button" id="generateButton" >Generate!</button>
+      <button id="generateButton" onclick="getOption(); getOption2(); getOption3(); showAlert()"> Generate!</button>
     </div>
 
-    <!-- sscript to validate input and navigate to schedule page with button click -->
     <script>
-        document.getElementById("generateButton").addEventListener("click", function() {
-            // Validate the input
-            var yearInput = document.getElementById("year");
-            var yearError = document.getElementById("yearError");
+      document.getElementById("generateButton").addEventListener("click", function() {
+        // Validate the input
+        var yearInput = document.getElementById("year");
+        var yearError = document.getElementById("yearError");
 
-            if (!yearInput.checkValidity()) {
-                // If the input is not valid, show an error message
-                yearError.textContent = "Please enter a valid 4-digit year.";
-                yearError.style.display = "block";
-                return;
-            } else {
-                // If the input is valid, clear the error message
-                yearError.textContent = "";
+        if (!yearInput.checkValidity()) {
+          // If the input is not valid, show an error message
+          yearError.textContent = "Please enter a valid 4-digit year.";
+          yearError.style.display = "block";
+          return;
+        } else {
+          // If the input is valid, clear the error message
+          yearError.textContent = "";
                 yearError.style.display = "none";
             }
-            window.location.href = "schedule_page.html";
+            window.location.href = "https://cristalwithani.github.io/Align2023/schedule_page.html";
         });
     </script>
 
-    <!-- 
-    TO DO
-    using align.js:
-        ~ call getVariables() function to get variables from this document
-        ~ call the GenSched() function to create the schedule array
+    <!-- DISPLAY THE OUTPUT -->
+    <p> Hours selected:
+      <span class="output"></span>
+    </p>
+    <p> Semester selected:
+      <span class="output2"></span>
+    </p>
+    <p> Year selected:
+      <span class="output3"></span>
+    </p>
+  </body>
+
+  <!-- Parsing variables using localStorage -->
+  <script>
+  window.onload = function() {
+    var hours = "output";
+    var sem = "output2";
+    var year = "output3";
+
+    localStorage.setItem("hours", hours);
+    localStorage.setItem("semester", sem);
+    localStorage.setItem("year", year);
     
-    NOTE:
-        I have a strong feeling that you will not be able to grab inputs from this file
-        and use those inputs to make the schedule in another file.
-        What I would do is use the varibles and create the schedule array in this file
-        and find a way to use that array in schedule.html.
-        If you are having a really hand time doing it with JS and don't want to use PHP,
-        I suggest you write out the contents of the schedule array to a CSV where each row is a semester.
-        You could then process the CSV in schedule.html and populate the table using the CSV instead of an array.
-
-    P.S : 
-        I added a header for you with the TWU logo on it and everything is maroon now!
-        Make sure to keep up with the CSS in style.css. Don't mess with reset.css. That's just a background thing.
-     -->
-
-</body>
+  }
+</script>
 
 </html>
