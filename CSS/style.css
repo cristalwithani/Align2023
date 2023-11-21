@@ -1,0 +1,117 @@
+/* ---------- general styling ---------- */
+
+* {
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: inherit;
+    margin: 0;
+    padding: 0;
+}
+  
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+/* ---------- header styling ---------- */
+header {
+  background-color: #850928;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+}
+
+header img {
+  width: 120px;
+  height: auto;
+  margin-right: 30px;
+}
+
+header h1 {
+  color: #fff;
+  margin: 0;
+  font-size: 30px;
+}
+
+/* ---------- inputs styling ---------- */
+
+.inputs{
+    min-width: 350px;
+    position: relative;
+}
+
+select {
+    appearance: none;
+    /*  safari  */
+    -webkit-appearance: none;
+    /*  other styles for aesthetics */
+    width: 100%;
+    padding: 0.675em 6em 0.675em 1em;
+    background-color: #fff;
+    border: 1px solid #caced1;
+    border-radius: 0.25rem;
+    color: #000;
+}
+
+.hours_select::before,.hours_select::after,
+.sem_select::before,.sem_select::after
+{
+  --size: 0.3rem;
+  content: "";
+  position: absolute;
+  right: 1rem;
+}
+
+.hours_select::before,
+.sem_select::before 
+{
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-bottom: var(--size) solid black;
+  top: 40%;
+}
+
+.hours_select::after,
+.sem_select::after 
+{
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-top: var(--size) solid black;
+  top: 55%;
+}
+
+.year_input input[type="text"]{
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+  }
+
+/* ---------- generate button styling ---------- */
+button {
+    padding: 10px 15px;
+    min-width: 350px;
+    background-color: #850928;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  button:hover {
+    background-color: #850928;
+  }
+  
+  button:active {
+    background-color: #440313;
+  }
+  

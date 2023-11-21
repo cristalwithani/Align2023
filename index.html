@@ -1,57 +1,106 @@
-<!DOCTYPE html>
-<Html>    
+<html>
+<head>
+    <!-- Home  Page -->
+    <title>Align</title>
 
-<!-- JAVASCRIPT FILE LOCATION -->
-<!-- Change to GitHub file location later -->
-<script src="C:\Users\Cristal\Documents\FINAL PROJECT FILES\javascript.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<Head>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="CSS\reset.css">
+    <link rel="stylesheet" href="CSS\style.css">
 
-<title>  
-Align
-</title>  
-</Head>
-  
-<Body>
-<!-- Asking the user for input, will be left aligned -->
-<h1>Please enter the information necessary to generate a schedule.</h1>
-   
-<center> <!-- Will cause text to be center aligned -->
+    <!-- JavaScript Files -->
+    <script src="align.js"></script>
+    <script src="javascript.js"></script>
 
-<!-- Dropdown for hours per semester -->
-<p>Choose the amount of hours per semester:</p>
-  
-<select class="hours_per_sem" name="hours_per_sem">
-  <option>9</option>
-  <option>12</option>
-  <option>15</option>
-  <option>18</option>
-</select>
+</head>
 
-<div class="hours"> <!-- Hours variable -->
-  
-<!-- Dropdown for starting semester -->
-<p>Choose the starting semester:</p>
+<body>
+    <!-- Header Style -->
+    <header>
+        <img src="Images\TWU.png" alt="TWU Logo">
+        <h1>Align</h1>
+    </header>
+    
+    <!-- Asking the user for input, will be left aligned -->
+    <h1>Please enter the information necessary to generate a schedule.</h1>
+ 
+    <div class="inputs">
+        <!-- get hours variable -->
+        <div class="hours_select" style="padding-bottom: 30px;">
+            <label for="hours">Choose your desired workload:</label>
+            <select id="hours" name="hours" required>
+                <option value="9">9 credits per semester</option>
+                <option value="12">12 credits per semester</option>
+                <option value="15">15 credits per semester</option>
+                <option value="18">18 credits per semester</option>
+            </select>
+        </div>
 
-<select class="start_sem" name="start_sem">
-  <option>Fall</option>
-  <option>Spring</option>
-</select>
+        <!-- get semester variable -->
+        <div class="sem_select" style="padding-bottom: 30px;">
+            <label for="sem">Choose your desired starting semester:</label>
+            <select id="sem" name="sem"required>
+                <option value="F">Fall Semester</option>
+                <option value="S">Spring Semester</option>
+            </select>
+        </div>
 
-<div class="semester"> <!-- Semester variable -->
+        <!-- get year variable -->
+        <div class="year_input" style="padding-bottom: 30px;">
+            <label for="year">Enter Starting Year:</label>
+            <input type="text" id="year" name="year" placeholder="Ex: 2023" pattern="\d{4}" required>
+            <span class="error-message" id="yearError"></span>
+        </div>
+    </div>
 
-<!-- Text input for starting year -->
-<<form action="https://cristalwithani.github.io/Align2023/schedule_page.html" method="get">
-  <label for="year">Type in the starting year:</label><br>
-  <input type="text" id="year" placeholder="Ex: 2023"><br><br>
-  
-<!-- Export button -->
-  <input type="submit" value="EXPORT">
-</form> 
+    <!-- generate button -->
+    <div class="generate_button">
+        <button type="button" id="generateButton" >Generate!</button>
+    </div>
 
+    <!-- sscript to validate input and navigate to schedule page with button click -->
+    <script>
+        document.getElementById("generateButton").addEventListener("click", function() {
+            // Validate the input
+            var yearInput = document.getElementById("year");
+            var yearError = document.getElementById("yearError");
 
-</center>  
-</Body>  
-</Html>  
+            if (!yearInput.checkValidity()) {
+                // If the input is not valid, show an error message
+                yearError.textContent = "Please enter a valid 4-digit year.";
+                yearError.style.display = "block";
+                return;
+            } else {
+                // If the input is valid, clear the error message
+                yearError.textContent = "";
+                yearError.style.display = "none";
+            }
+            window.location.href = "schedule_page.html";
+        });
+    </script>
 
-  
+    <!-- 
+    TO DO
+    using align.js:
+        ~ call getVariables() function to get variables from this document
+        ~ call the GenSched() function to create the schedule array
+    
+    NOTE:
+        I have a strong feeling that you will not be able to grab inputs from this file
+        and use those inputs to make the schedule in another file.
+        What I would do is use the varibles and create the schedule array in this file
+        and find a way to use that array in schedule.html.
+        If you are having a really hand time doing it with JS and don't want to use PHP,
+        I suggest you write out the contents of the schedule array to a CSV where each row is a semester.
+        You could then process the CSV in schedule.html and populate the table using the CSV instead of an array.
+
+    P.S : 
+        I added a header for you with the TWU logo on it and everything is maroon now!
+        Make sure to keep up with the CSS in style.css. Don't mess with reset.css. That's just a background thing.
+     -->
+
+</body>
+
+</html>
