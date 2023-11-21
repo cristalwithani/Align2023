@@ -6,24 +6,7 @@
 <script src="C:\Users\Cristal\Documents\FINAL PROJECT FILES\javascript.js"></script>
 
 <Head>
-<Style>
 
-/* BUTTON FOR EXPORT */
-  .button {
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-}
-
-.button2 {background-color: #800000;} 
-
-</Style>
 <title>  
 Align
 </title>  
@@ -58,21 +41,15 @@ Align
 <div class="semester"> <!-- Semester variable -->
 
 <!-- Text input for starting year -->
-<p>Type in the starting year:</p>
-<input placeholder="Ex: 2012" name="year_input"
-<p id="log"></p>
-
-<!-- NEED YEAR VAIRABLE -->
+<<form action="https://cristalwithani.github.io/Align2023/schedule_page.html" method="get">
+  <label for="year">Type in the starting year:</label><br>
+  <input type="text" id="year" placeholder="Ex: 2023"><br><br>
   
-<!-- Button for export -->
-<button onclick="myFunction()">EXPORT</button></p>
+<!-- Export button -->
+  <input type="submit" value="EXPORT">
+</form> 
 
-<script type="text/javascript">
-    document.getElementById("myButton").onclick = function () {
-        location.href = "https://cristalwithani.github.io/Align2023/schedule_page.html";
-    };
 
-  
 </center>  
 </Body>  
 </Html>  
