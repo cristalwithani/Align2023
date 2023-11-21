@@ -37,8 +37,31 @@ Priority Coding:
 */
 
 
-// VARIABLES -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//VARIABLES
+//Hours variable
+function getOption() {
+  selectElement = document.querySelector('#hours');
+  output = selectElement.value;
+  document.querySelector('.output').textContent = output;
+}
+//Sem variable
+function getOption2() {
+  selectElement = document.querySelector('#sem');
+  output = selectElement.value;
+  document.querySelector('.output2').textContent = output;
+}
+//Year variable
+function getOption3() {
+  textElement = document.querySelector('#year');
+  output = textElement.value;
+  document.querySelector('.output3').textContent = output;
+}
 
+//Function to display alert before generating schedule
+function showAlert() {
+  var myText = "Schedule may take a few moments to generate.";
+  alert(myText);
+}
 
 //import Node.js modules
 const fs = require('fs');
@@ -68,26 +91,26 @@ var year = 0;
 
 // FUNCTIONS -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function getVariables(){
+function getVariables() {
   hours = document.getElementById("hours").value;
   sem = document.getElementById("sem").value;
   year = document.getElementById("year").value;
 }
 
 //function to get data from files and put into respective containment arrays
-function getData(filepath){
+function getData(filepath) {
   try {
     // Read the entire file synchronously
     const data = fs.readFileSync(filepath, 'utf8');
-  
+
     // Split the data into lines
     const lines = data.split('\n');
-  
+
     // Process each line
     for (let i = 0; i < lines.length; i++) {
       const items = lines[i].split(',');
       const course = items.map(item => item.trim());
-      if(filepath.includes("reqs")){
+      if (filepath.includes("reqs")) {
         reqs.push(course);
       } else {
         electives.push(course);
@@ -97,16 +120,16 @@ function getData(filepath){
     console.error('Error reading the file:', err);
   }
 }
- 
+
 //function to get semesters of plan to use as headers of schedule array indexes
-function GenSem(){
+function GenSem() {
   sems = [];
-  num_sems = Math.ceil(120 / hours);  //Math.ceil will round up for the number of semesters
+  num_sems = Math.ceil(120 / hours); //Math.ceil will round up for the number of semesters
 
   //create semester headers (F_2000, S_2001, etc.)
-  if(sem == "F"){
-    for(i=1; i<=num_sems; i++){
-      if(i%2 !== 0){
+  if (sem == "F") {
+    for (i = 1; i <= num_sems; i++) {
+      if (i % 2 !== 0) {
         s = "F_" + year;
         sems.push(s);
         year = year + 1;
@@ -116,8 +139,8 @@ function GenSem(){
       }
     }
   } else {
-    for(i=1; i<=num_sems; i++){
-      if(i%2 !== 0){
+    for (i = 1; i <= num_sems; i++) {
+      if (i % 2 !== 0) {
         s = "S_" + year;
         sems.push(s);
       } else {
@@ -129,16 +152,16 @@ function GenSem(){
   }
 
   //create order array for priority checking
-  for(s=0;s<sems.length;s++){
+  for (s = 0; s < sems.length; s++) {
     string = sems[s].split('_');
     semester = string[0];
     y = parseInt(string[1]);
-    if(semester == "F"){
-      if(y%2 !== 0){
+    if (semester == "F") {
+      if (y % 2 !== 0) {
         //fall odd
         order.push("147");
       } else {
-        if(y%4 == 0){
+        if (y % 4 == 0) {
           //olympic fall
           order.push("1258")
         } else {
@@ -147,11 +170,11 @@ function GenSem(){
         }
       }
     } else {
-      if(y%2 !== 0){
+      if (y % 2 !== 0) {
         //spring odd
         order.push("136");
       } else {
-        if(y%4 == 0){
+        if (y % 4 == 0) {
           //olympic spring
           order.push("1249")
         } else {
@@ -175,23 +198,23 @@ parameters:
   prev - the index of schedule that the previous course was added to
     * this also gets returned 
 */
-function addCourse(course,prev){
+function addCourse(course, prev) {
   //find nearest availble index (one that is not full)
-  credits = Math.ceil(hours/3);
+  credits = Math.ceil(hours / 3);
   nearest = -1;
-  for(s=0; s < schedule.length; s++){
-    if(schedule[s].length < (credits+3)){
+  for (s = 0; s < schedule.length; s++) {
+    if (schedule[s].length < (credits + 3)) {
       nearest = s;
       break;
     }
   }
 
   //adjust nearest according to what prev is
-  if(nearest !== -1){
-    if(nearest == prev){
+  if (nearest !== -1) {
+    if (nearest == prev) {
       nearest = nearest + 1;
-    } else if (prev > nearest){
-      nearest = (prev-nearest) + nearest + 1;
+    } else if (prev > nearest) {
+      nearest = (prev - nearest) + nearest + 1;
     }
     //schedule[nearest].push(course);
   } else {
@@ -202,17 +225,17 @@ function addCourse(course,prev){
   course_priority = course[1];
   sem_priority = order[nearest];
 
-  if(sem_priority.includes(course_priority)){
+  if (sem_priority.includes(course_priority)) {
     schedule[nearest].push(course);
   } else {
-    do{
+    do {
       nearest = nearest + 1;
       sem_priority = order[nearest];
     } while (!sem_priority.includes(course_priority) && (nearest >= schedule.length))
 
     schedule[nearest].push(course);
   }
-  
+
   return nearest;
 }
 
@@ -224,47 +247,47 @@ Function to add required courses to schedule based on sem_order (reqs[r][2])
   4 = These courses can go wherever after 3 courses 
 */
 
-function requiredCourses(){
-  for(r=1; r<reqs.length; r++){
+function requiredCourses() {
+  for (r = 1; r < reqs.length; r++) {
     o = parseInt(reqs[r][2]);
-    switch(o){
+    switch (o) {
       case 1:
-        prev = addCourse(reqs[r],-1);
+        prev = addCourse(reqs[r], -1);
         break;
       case 2:
-        prev1 = addCourse(reqs[r],prev);
+        prev1 = addCourse(reqs[r], prev);
         break;
       case 3:
-        prev2 = addCourse(reqs[r],prev1);
+        prev2 = addCourse(reqs[r], prev1);
         break;
       case 4:
-        prev3 = addCourse(reqs[r],prev2);
+        prev3 = addCourse(reqs[r], prev2);
         break;
     }
   }
 }
 
 //function to add fillers in schedule where you can dd an elective or core
-function fillers(){
-  credits = Math.ceil(hours/3);
-  for(s=0; s < schedule.length; s++){
-    if(schedule[s].length <= (credits+1)){
-      fill = (credits+1) - schedule[s].length;
-      for(f=0; f<fill; f++){
+function fillers() {
+  credits = Math.ceil(hours / 3);
+  for (s = 0; s < schedule.length; s++) {
+    if (schedule[s].length <= (credits + 1)) {
+      fill = (credits + 1) - schedule[s].length;
+      for (f = 0; f < fill; f++) {
         schedule[s].push("Elective/Core");
       }
     }
   }
 }
 
-function GenSched(){
+function GenSched() {
   getData(reqs_data);
   GenSem();
   requiredCourses();
   fillers();
 }
 
-function electiveSched(){
+function electiveSched() {
   getData(elective_data);
   //make priority lists for elective courses
   fallEven = [];
@@ -274,9 +297,9 @@ function electiveSched(){
   fallOlympic = [];
   springOlympic = [];
 
-  for(e=0; e<electives.length; e++){
+  for (e = 0; e < electives.length; e++) {
     priority = parseInt(electives[e][1]);
-    switch(priority){
+    switch (priority) {
       case 1:
         fallEven.push(electives[e]);
         fallOdd.push(electives[e]);
@@ -304,46 +327,46 @@ function electiveSched(){
         fallOdd.push(electives[e]);
         break;
       case 8:
-        if(year%4 == 0){
+        if (year % 4 == 0) {
           fallOlympic.push(electives[e]);
         }
         break;
       case 9:
-        if(year%4 == 0){
+        if (year % 4 == 0) {
           springOlympic.push(electives[e]);
         }
         break;
     }
   }
-  
+
   //add priority lists to semesters in elective schedule
-  for(e=0; e<elective_schedule.length; e++){
+  for (e = 0; e < elective_schedule.length; e++) {
     s_priority = order[e];
-    switch(s_priority){
+    switch (s_priority) {
       case '125':
         elective_schedule[e].push(fallEven);
-        break; 
+        break;
       case '1258':
         elective_schedule[e].push(fallEven);
-        if(fallOlympic.length>0){
+        if (fallOlympic.length > 0) {
           elective_schedule[e].push(fallOlympic);
         }
-        break; 
+        break;
       case '147':
         elective_schedule[e].push(fallOdd);
-        break; 
+        break;
       case '124':
         elective_schedule[e].push(springEven);
         break;
       case '1249':
         elective_schedule[e].push(springEven);
-        if(springOlympic.length>0){
+        if (springOlympic.length > 0) {
           elective_schedule[e].push(springOlympic);
         }
-        break; 
+        break;
       case '136':
         elective_schedule[e].push(springOdd);
-        break; 
+        break;
     }
   }
 }
