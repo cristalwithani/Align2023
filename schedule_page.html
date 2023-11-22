@@ -1,13 +1,23 @@
 <!DOCTYPE html>
-<script src="display.js"></script>
 <html>
-<style>
-    table,
-    th,
-    td {
-        border: 1px solid black;
-    }
-</style>
+
+<head>
+    <head>
+        <!-- Schedule  Page -->
+        <title>Schedule</title>
+    
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="CSS\reset.css">
+        <link rel="stylesheet" href="CSS\style.css">
+    
+        <!-- JavaScript Files -->
+        <script src="display.js"></script>
+    
+    </head>
+</head>
 
 <!-- The variables -->
 <script>
@@ -16,11 +26,14 @@
     window.onload = console.log(localStorage.getItem("year"));
 </script>
 
-<head>
-</head>
-
 <body>
 
+     <!-- Header Style -->
+     <header>
+        <img src="Images\TWU.png" alt="TWU Logo">
+        <h1>Align</h1>
+    </header>
+    
     <h1>Your generated schedule:</h1>
 
     <p>
@@ -35,20 +48,14 @@
         <span class="year"></span>
     </p>
     </p>
-    <center>
-
-        <!-- Table -->
-        <table id="myTable">
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </table>
-
-        <!--  -->
-    </center>
+    <table id="myTable">
+        <tr>
+            <th>hello</th>
+            <th>11111111111111</th>
+            <th>22222222222222</th>
+            <th>333333333333333</th>
+        </tr>
+    </table>
 </body>
 
 </html>
