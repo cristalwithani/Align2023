@@ -38,60 +38,60 @@ Priority Coding:
 
 
 //VARIABLES
-/*Hours variable
-function getOption() {
-    selectElement = document.querySelector('#hours');
-    output = selectElement.value;
-    document.querySelector('.output').textContent = output;
-}
-//Sem variable
-function getOption2() {
-    selectElement = document.querySelector('#sem');
-    output = selectElement.value;
-    document.querySelector('.output2').textContent = output;
-}
-//Year variable
-function getOption3() {
-    textElement = document.querySelector('#year');
-    output = textElement.value;
-    document.querySelector('.output3').textContent = output;
-}
+    /*Hours variable
+    function getOption() {
+        selectElement = document.querySelector('#hours');
+        output = selectElement.value;
+        document.querySelector('.output').textContent = output;
+    }
+    //Sem variable
+    function getOption2() {
+        selectElement = document.querySelector('#sem');
+        output = selectElement.value;
+        document.querySelector('.output2').textContent = output;
+    }
+    //Year variable
+    function getOption3() {
+        textElement = document.querySelector('#year');
+        output = textElement.value;
+        document.querySelector('.output3').textContent = output;
+    }
 
-//Function to display alert before generating schedule
-function showAlert() {
-    var myText = "Schedule may take a few moments to generate.";
-    alert(myText);
-}
-
-
-//import Node.js modules
-const fs = require('fs');
-
-//paths to course data files
-const reqs_data = 'Data\\reqs.csv';
-
-//arrays to contain course data
-const reqs = [];
-const electives = [];
-
-//array that indicates what priority each seemster in schedule has (for processing courses)
-order = [];
-
-//array for final schedule
-let schedule = [];
-
-
-//user input parameters
-var hours = 0;
-var sem = "";
-var year = 0;
-
+    //Function to display alert before generating schedule
+    function showAlert() {
+        var myText = "Schedule may take a few moments to generate.";
+        alert(myText);
+    }
 */
+
+// VARIABLES -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    //import Node.js modules
+    const fs = require('fs');
+
+    //paths to course data files
+    const reqs_data = 'Data\\reqs.csv';
+
+    //arrays to contain course data
+    const reqs = [];
+
+    //array that indicates what priority each seemster in schedule has (for processing courses)
+    order = [];
+
+    //array for final schedule
+    let schedule = [];
+
+
+    //user input parameters
+    var hours = 0;
+    var sem = "";
+    var year = 0;
+
+
 // FUNCTIONS -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//import Node.js modules
-const fs = require('fs');
+
 //function to get data from files and put into respective containment arrays
-function getData(filepath, coursedata) {
+function getData(filepath) {
     try {
         // Read the entire file synchronously
         const data = fs.readFileSync(filepath, 'utf8');
@@ -103,11 +103,24 @@ function getData(filepath, coursedata) {
         for (let i = 0; i < lines.length; i++) {
             const items = lines[i].split(',');
             const course = items.map(item => item.trim());
-            coursedata.push(course);
+            reqs.push(course);
         }
     } catch (err) {
         console.error('Error reading the file:', err);
     }
+}
+
+//get variables from index.html
+function getVariables(){
+    selectHours = document.querySelector('#hours');
+    hours = selectHours.value;
+
+    selectSem = document.querySelector('#sem');
+    sem = selectSem.value;
+
+    selectYear = document.querySelector('#year');
+    year = selectYear.value;
+
 }
 
 //function to get semesters of plan to use as headers of schedule array indexes
@@ -179,14 +192,7 @@ function GenSem() {
     elective_schedule = sems.map(element => [element]);
 }
 
-
-/*
-function that adds courses to schedule
-parameters:
-  course - array that contains course information to be added to schedule
-  prev - the index of schedule that the previous course was added to
-    * this also gets returned 
-*/
+//general function used to add courses to schedule
 function addCourse(course, prev) {
     //find nearest availble index (one that is not full)
     credits = Math.ceil(hours / 3);
@@ -228,14 +234,7 @@ function addCourse(course, prev) {
     return nearest;
 }
 
-/*
-Function to add required courses to schedule based on sem_order (reqs[r][2])
-  1 = These courses go ASAP 
-  2 = These courses go next and must go after 1 courses and before 3 courses
-  3 = These courses go next and must go after 2 courses and before 4 courses
-  4 = These courses can go wherever after 3 courses 
-*/
-
+//function to add required courses
 function requiredCourses() {
     for (r = 1; r < reqs.length; r++) {
         o = parseInt(reqs[r][2]);
@@ -269,36 +268,37 @@ function fillers() {
     }
 }
 
+//actual generation of course
 function GenSched() {
-    getData(reqs_data);
+    getData('Data\\reqs.csv');
     GenSem();
     requiredCourses();
     fillers();
-    return schedule;
-}   
+    
+    console.log("Schedule generated!");
 
-    // TESTING -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    const CSVformat = schedule.map(row => row.join(',')).join('\n');
+    fs.writeFileSync("Data\\schedule.csv",CSVformat);
+
+    console.log("CSV written!");
+}
+
+
+// TESTING -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 //Test variables:
 var hours = 12;
 var sem = "F";
 var year = 2000;
 
+getData('Data\\reqs.csv');
 //Schedule generation:
-GenSched();
-
+//GenSched();
+/*
 //Display schedule
 for(s=0; s<schedule.length; s++){
   console.log(schedule[s]);
-  console.log('-----------------------------------------');
-}
-/*
-//Electives schedule generation:
-electiveSched();
-
-//Display electives schedule
-for(e=0; e<elective_schedule.length; e++){
-  console.log(elective_schedule[e]);
   console.log('-----------------------------------------');
 }
 */
