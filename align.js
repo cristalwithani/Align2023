@@ -285,110 +285,7 @@ function GenSched() {
     GenSem();
     requiredCourses();
     fillers();
-}
-
-function electiveSched() {
-    getData(elective_data);
-    //make priority lists for elective courses
-    fallEven = [];
-    fallOdd = [];
-    springEven = [];
-    springOdd = [];
-    fallOlympic = [];
-    springOlympic = [];
-
-    for (e = 0; e < electives.length; e++) {
-        priority = parseInt(electives[e][1]);
-        switch (priority) {
-            case 1:
-                fallEven.push(electives[e]);
-                fallOdd.push(electives[e]);
-                springEven.push(electives[e]);
-                springOdd.push(electives[e]);
-                break;
-            case 2:
-                fallEven.push(electives[e]);
-                springEven.push(electives[e]);
-                break;
-            case 3:
-                springOdd.push(electives[e]);
-                break;
-            case 4:
-                fallOdd.push(electives[e]);
-                springEven.push(electives[e]);
-                break;
-            case 5:
-                fallEven.push(electives[e]);
-                break;
-            case 6:
-                springOdd.push(electives[e]);
-                break;
-            case 7:
-                fallOdd.push(electives[e]);
-                break;
-            case 8:
-                if (year % 4 == 0) {
-                    fallOlympic.push(electives[e]);
-                }
-                break;
-            case 9:
-                if (year % 4 == 0) {
-                    springOlympic.push(electives[e]);
-                }
-                break;
-        }
-    }
-
-    //add priority lists to semesters in elective schedule
-    for (e = 0; e < elective_schedule.length; e++) {
-        s_priority = order[e];
-        switch (s_priority) {
-            case '125':
-                elective_schedule[e].push(fallEven);
-                break;
-            case '1258':
-                elective_schedule[e].push(fallEven);
-                if (fallOlympic.length > 0) {
-                    elective_schedule[e].push(fallOlympic);
-                }
-                break;
-            case '147':
-                elective_schedule[e].push(fallOdd);
-                break;
-            case '124':
-                elective_schedule[e].push(springEven);
-                break;
-            case '1249':
-                elective_schedule[e].push(springEven);
-                if (springOlympic.length > 0) {
-                    elective_schedule[e].push(springOlympic);
-                }
-                break;
-            case '136':
-                elective_schedule[e].push(springOdd);
-                break;
-        }
-    }
-
-
-    //Array to populate the table
-/*    var sheduleTable = [
-        {for(s=0; s<schedule.length;s++)
-        }]
-*/
-
-    //Insert data in to table on schedule_page.html
-/*    function Insert_Data() {
-        var table = document.getElementById("myTable");
-        var rows = table.querySelectorAll('tr');
-        console.log(rows)
-        for (let i = 1; i < rows.length; i++) {
-            rows[i].children[0].textContent = a[i - 1].sem
-            rows[i].children[1].textContent = a[i - 1].year
-            rows[i].children[2].textContent = a[i - 1].course
-        }
-    }
- */   
+}   
 
     // TESTING -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
@@ -415,7 +312,3 @@ for(e=0; e<elective_schedule.length; e++){
   console.log('-----------------------------------------');
 }
 */
-
-
-
-
