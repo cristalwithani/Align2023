@@ -38,7 +38,7 @@ Priority Coding:
 
 
 //VARIABLES
-//Hours variable
+/*Hours variable
 function getOption() {
     selectElement = document.querySelector('#hours');
     output = selectElement.value;
@@ -63,12 +63,12 @@ function showAlert() {
     alert(myText);
 }
 
+
 //import Node.js modules
 const fs = require('fs');
 
 //paths to course data files
 const reqs_data = 'Data\\reqs.csv';
-const elective_data = 'Data\\electives.csv';
 
 //arrays to contain course data
 const reqs = [];
@@ -78,27 +78,20 @@ const electives = [];
 order = [];
 
 //array for final schedule
-schedule = [];
+let schedule = [];
 
-//array for schedule of possible electives
-elective_schedule = [];
 
 //user input parameters
 var hours = 0;
 var sem = "";
 var year = 0;
 
-
+*/
 // FUNCTIONS -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-function getVariables() {
-    hours = document.getElementById("hours").value;
-    sem = document.getElementById("sem").value;
-    year = document.getElementById("year").value;
-}
-
+//import Node.js modules
+const fs = require('fs');
 //function to get data from files and put into respective containment arrays
-function getData(filepath) {
+function getData(filepath, coursedata) {
     try {
         // Read the entire file synchronously
         const data = fs.readFileSync(filepath, 'utf8');
@@ -110,11 +103,7 @@ function getData(filepath) {
         for (let i = 0; i < lines.length; i++) {
             const items = lines[i].split(',');
             const course = items.map(item => item.trim());
-            if (filepath.includes("reqs")) {
-                reqs.push(course);
-            } else {
-                electives.push(course);
-            }
+            coursedata.push(course);
         }
     } catch (err) {
         console.error('Error reading the file:', err);
@@ -285,10 +274,11 @@ function GenSched() {
     GenSem();
     requiredCourses();
     fillers();
+    return schedule;
 }   
 
     // TESTING -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
+
 //Test variables:
 var hours = 12;
 var sem = "F";
@@ -302,7 +292,7 @@ for(s=0; s<schedule.length; s++){
   console.log(schedule[s]);
   console.log('-----------------------------------------');
 }
-
+/*
 //Electives schedule generation:
 electiveSched();
 
