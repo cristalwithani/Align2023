@@ -2,81 +2,53 @@
 <script src="C:\Users\Cristal\Documents\FINAL PROJECT FILES\VSCodeFiles\javascript.js"></script>
 <html>
 <style>
-table, th, td {
-  border:1px solid black;
-}
+    table,
+    th,
+    td {
+        border: 1px solid black;
+    }
 </style>
 
 <!-- The variables -->
 <script>
-window.onload = console.log(localStorage.getItem("hours"));
-window.onload = console.log(localStorage.getItem("semester"));
-window.onload = console.log(localStorage.getItem("year"));
+    window.onload = console.log(localStorage.getItem("hours"));
+    window.onload = console.log(localStorage.getItem("semester"));
+    window.onload = console.log(localStorage.getItem("year"));
 </script>
 
 <head>
 </head>
+
 <body>
 
-<h1>Your generated schedule:</h1>
+    <h1>Your generated schedule:</h1>
 
+    <p>
+        <!-- DISPLAY THE OUTPUT -->
+    <p> Hours selected:
+        <span class="hours"></span>
+    </p>
+    <p> Semester selected:
+        <span class="sem"></span>
+    </p>
+    <p> Year selected:
+        <span class="year"></span>
+    </p>
+    </p>
+    <center>
 
+        <!-- Table -->
+        <table id="myTable">
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </table>
 
-<p>
-  <!-- DISPLAY THE OUTPUT -->
-  <p> Hours selected:
-    <span class="hours"></span>
-  </p>
-  <p> Semester selected:
-    <span class="sem"></span>
-  </p>
-  <p> Year selected:
-    <span class="year"></span>
-  </p>
-</p>
-<center>
-
-<!-- Table -->
-<table>
-<!-- Title Row -->
-<!-- Use for Semester and Year variables -->
-  <tr> <!-- Table Header -->
-    <th>Fall 2020</th> 
-    <th>Spring 2021</th>
-    <th>Fall 2021</th>
-	<th>Spring 2022</th>
-  </tr>
-  
-  <tr>
-    <td>CSCI# 1</td> <!-- Collumn 1, Row 1 -->
-    <td>CSCI# 5</td> <!-- Collumn 2, Row 1 -->
-    <td>CSCI# 9</td> <!-- Collumn 3, Row 1 -->
-	<!-- Add another to add a collumn -->
-  </tr>
-  
-  <tr>
-    <td>CSCI# 2</td> <!-- Collumn 1, Row 2 -->
-    <td>CSCI# 6</td> <!-- Collumn 2, Row 2 -->
-    <td>CSCI# 10</td> <!-- Collumn 3, Row 3 -->
-  </tr>
-  
-    <tr>
-    <td>CSCI# 3</td> <!-- Collumn 1, Row 3 -->
-    <td>CSCI# 7</td> <!-- Collumn 2, Row 3 -->
-    <td>CSCI# 11</td> <!-- Collumn 3, Row 3 -->
-  </tr>
-  
-    <tr>
-    <td>CSCI# 4</td> <!-- Collumn 1, Row 4 -->
-    <td>CSCI# 8</td> <!-- Collumn 2, Row 4 -->
-    <td>CSCI# 12</td> <!-- Collumn 3, Row 4 -->
-  </tr>
-  
- 
-  
-</table>
-
-<!--  -->
-</center>
+        <!--  -->
+    </center>
 </body>
+
 </html>
