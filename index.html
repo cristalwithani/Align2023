@@ -61,7 +61,7 @@
 
     <!--ONE BIG BUTTON -->
     <div class="generate_button">
-        <button id="generateButton" onclick="getVariables(); showAlert()">
+        <button id="generateButton" onclick="run(); showAlert()">
             Generate!</button>
     </div>
 
@@ -85,30 +85,71 @@
         });
     </script>
 
-    <!-- DISPLAY THE OUTPUT 
-    <p> Hours selected:
-        <span class="output"></span>
-    </p>
-    <p> Semester selected:
-        <span class="output2"></span>
-    </p>
-    <p> Year selected:
-        <span class="output3"></span>
-    </p> -->
+    <script>
+        function run(){
+            let hours;
+            let sem;
+            let year;
+
+            selectHours = document.querySelector('#hours');
+            hours = selectHours.value;
+
+            selectSem = document.querySelector('#sem');
+            sem = selectSem.value;
+
+            selectYear = document.querySelector('#year');
+            year = selectYear.value;
+            console.log(hours);
+            console.log(sem);
+            console.log(year);
+
+            let schedule = [];
+            let order = [];
+            arrays = GenSem(hours,sem,year);
+            schedule = arrays.schedule;
+            order = arrays.order;
+
+            // --------------------------------------------------------------------------------------
+
+            let reqs = [];
+
+            const fileInput = 'Data\\reqs.csv';
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const data = e.target.result;
+                const lines = data.split('\n');
+
+                for (let i = 0; i < lines.length; i++) {
+                const items = lines[i].split(',');
+                const course = items.map(item => item.trim());
+                reqs.push(course);
+                }
+
+                //console.log(reqs);
+                //requiredCourses(reqs, schedule, order);
+            };
+
+            fetch(fileInput)
+                .then(response => {
+                    if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => reader.readAsText(new Blob([data])))
+                .catch(error => console.error('Error fetching file:', error));
+
+            // --------------------------------------------------------------------------------------
+        
+            //fillers(hours, schedule);
+
+            //console.log("Schedule generated!");
+
+            //writeOut(schedule);
+        }
+</script>
+
 </body>
-
-<!-- Parsing variables using localStorage 
-<script>
-    window.onload = function () {
-        var hours = "output";
-        var sem = "output2";
-        var year = "output3";
-
-        localStorage.setItem("hours", hours);
-        localStorage.setItem("semester", sem);
-        localStorage.setItem("year", year);
-
-    }
-</script> -->
 
 </html>

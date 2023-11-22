@@ -57,11 +57,6 @@ Priority Coding:
         document.querySelector('.output3').textContent = output;
     }
 
-    //Function to display alert before generating schedule
-    function showAlert() {
-        var myText = "Schedule may take a few moments to generate.";
-        alert(myText);
-    }
 */
 
 // VARIABLES -------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -69,49 +64,41 @@ Priority Coding:
     //import Node.js modules
     const fs = require('fs');
 
-    //paths to course data files
-    const reqs_data = 'Data\\reqs.csv';
-
-    //arrays to contain course data
-    const reqs = [];
-
-    //array that indicates what priority each seemster in schedule has (for processing courses)
-    order = [];
-
-    //array for final schedule
-    let schedule = [];
-
-
-    //user input parameters
-    var hours = 0;
-    var sem = "";
-    var year = 0;
-
-
 // FUNCTIONS -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //function to get data from files and put into respective containment arrays
-function getData(filepath) {
-    try {
-        // Read the entire file synchronously
-        const data = fs.readFileSync(filepath, 'utf8');
-
-        // Split the data into lines
-        const lines = data.split('\n');
-
-        // Process each line
-        for (let i = 0; i < lines.length; i++) {
-            const items = lines[i].split(',');
-            const course = items.map(item => item.trim());
-            reqs.push(course);
-        }
-    } catch (err) {
-        console.error('Error reading the file:', err);
-    }
+function getData() {
+    const reqs = [];
+  
+    const fileInput = 'C:\\Users\\parus\\GitRepos\\Align2023\\Data\\reqs.csv';
+  
+    const reader = new FileReader();
+  
+    reader.onload = function (e) {
+      const data = e.target.result;
+      const lines = data.split('\n');
+  
+      for (let i = 0; i < lines.length; i++) {
+        const items = lines[i].split(',');
+        const course = items.map(item => item.trim());
+        reqs.push(course);
+      }
+    };
+  
+    // Read the file asynchronously
+    fetch(fileInput)
+      .then(response => response.text())
+      .then(data => reader.readAsText(new Blob([data])));
+    
+  return reqs;
 }
 
 //get variables from index.html
 function getVariables(){
+    let hours;
+    let sem;
+    let year;
+
     selectHours = document.querySelector('#hours');
     hours = selectHours.value;
 
@@ -121,10 +108,18 @@ function getVariables(){
     selectYear = document.querySelector('#year');
     year = selectYear.value;
 
+    return{
+        hours: hours,
+        sem:sem,
+        year:year
+    };
+
 }
 
 //function to get semesters of plan to use as headers of schedule array indexes
-function GenSem() {
+function GenSem(hours,sem,year) {
+    let schedule = [];
+    let order = [];
     sems = [];
     num_sems = Math.ceil(120 / hours); //Math.ceil will round up for the number of semesters
 
@@ -189,53 +184,58 @@ function GenSem() {
 
     //add semesters to schedules as headers (first index of array)
     schedule = sems.map(element => [element]);
-    elective_schedule = sems.map(element => [element]);
+    return {
+        schedule: schedule,
+        order: order
+    };
 }
 
 //general function used to add courses to schedule
-function addCourse(course, prev) {
-    //find nearest availble index (one that is not full)
-    credits = Math.ceil(hours / 3);
-    nearest = -1;
-    for (s = 0; s < schedule.length; s++) {
-        if (schedule[s].length < (credits + 3)) {
-            nearest = s;
-            break;
-        }
-    }
 
-    //adjust nearest according to what prev is
-    if (nearest !== -1) {
-        if (nearest == prev) {
-            nearest = nearest + 1;
-        } else if (prev > nearest) {
-            nearest = (prev - nearest) + nearest + 1;
-        }
-        //schedule[nearest].push(course);
-    } else {
-        console.warn("Schedule is full");
-    }
-
-    //adjust nearest according to priority
-    course_priority = course[1];
-    sem_priority = order[nearest];
-
-    if (sem_priority.includes(course_priority)) {
-        schedule[nearest].push(course);
-    } else {
-        do {
-            nearest = nearest + 1;
-            sem_priority = order[nearest];
-        } while (!sem_priority.includes(course_priority) && (nearest >= schedule.length))
-
-        schedule[nearest].push(course);
-    }
-
-    return nearest;
-}
 
 //function to add required courses
-function requiredCourses() {
+function requiredCourses(reqs, schedule, order) {
+    function addCourse(course, prev) {
+        //find nearest availble index (one that is not full)
+        credits = Math.ceil(hours / 3);
+        nearest = -1;
+        for (s = 0; s < schedule.length; s++) {
+            if (schedule[s].length < (credits + 3)) {
+                nearest = s;
+                break;
+            }
+        }
+    
+        //adjust nearest according to what prev is
+        if (nearest !== -1) {
+            if (nearest == prev) {
+                nearest = nearest + 1;
+            } else if (prev > nearest) {
+                nearest = (prev - nearest) + nearest + 1;
+            }
+            //schedule[nearest].push(course);
+        } else {
+            console.warn("Schedule is full");
+        }
+    
+        //adjust nearest according to priority
+        course_priority = course[1];
+        sem_priority = order[nearest];
+    
+        if (sem_priority.includes(course_priority)) {
+            schedule[nearest].push(course);
+        } else {
+            do {
+                nearest = nearest + 1;
+                sem_priority = order[nearest];
+            } while (!sem_priority.includes(course_priority) && (nearest >= schedule.length))
+    
+            schedule[nearest].push(course);
+        }
+    
+        return nearest;
+    }
+
     for (r = 1; r < reqs.length; r++) {
         o = parseInt(reqs[r][2]);
         switch (o) {
@@ -256,7 +256,7 @@ function requiredCourses() {
 }
 
 //function to add fillers in schedule where you can dd an elective or core
-function fillers() {
+function fillers(hours, schedule) {
     credits = Math.ceil(hours / 3);
     for (s = 0; s < schedule.length; s++) {
         if (schedule[s].length <= (credits + 1)) {
@@ -268,33 +268,36 @@ function fillers() {
     }
 }
 
-//actual generation of course
-function GenSched() {
-    getData('Data\\reqs.csv');
-    GenSem();
-    requiredCourses();
-    fillers();
-    
-    console.log("Schedule generated!");
+function writeOut(schedule) {
+    for(s=0; s<schedule.length; s++){
+        console.log(schedule[s]);
+        console.log('-----------------------------------------');
+    }
+    //const CSVformat = schedule.map(row => row.join(',')).join('\n');
+    //fs.writeFileSync('C:\\Users\\parus\\GitRepos\\Align2023\\Data\\schedule.csv',CSVformat);
 
-    const CSVformat = schedule.map(row => row.join(',')).join('\n');
-    fs.writeFileSync("Data\\schedule.csv",CSVformat);
-
-    console.log("CSV written!");
+    //console.log("CSV written!");
 }
 
+//Function to display alert before generating schedule
+function showAlert() {
+    var myText = "Schedule may take a few moments to generate.";
+    alert(myText);
+}
 
 // TESTING -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+res = getData();
+console.log(res);
 
 //Test variables:
-var hours = 12;
-var sem = "F";
-var year = 2000;
+//var hours = 12;
+//var sem = "F";
+//var year = 2000;
 
-getData('Data\\reqs.csv');
 //Schedule generation:
 //GenSched();
+
 /*
 //Display schedule
 for(s=0; s<schedule.length; s++){
